@@ -16,7 +16,10 @@
       keepassxc
       discord
       vim
-    ];
+      colcon
+    ] ++ (with pkgs.rosPackages.humble; [
+      ros-core
+    ]);
 
     file = {
     };
