@@ -1,40 +1,48 @@
 {
-  description = "Home Manager configuration of astra";
+  description = "Home Manager configuration of ASTRA";
 
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.follows = "nix-ros-overlay/nixpkgs";
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
+    hardware.url = "github:nixos/nixos-hardware";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
   };
 
-  outputs = { nixpkgs, nix-ros-overlay, home-manager, ... }:
-    let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [ nix-ros-overlay.overlays.default ];
-      };
-    in {
-      homeConfigurations."astra" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      home-manager,
+      zen-browser,
+      ...
+    }:
+    {
+      nixosConfigurations = {
+        astra = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./configuration.nix
+            ./hardware-configuration.nix
 
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [ ./home.nix ];
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
 
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
+                users.astra = import ./home.nix;
+                extraSpecialArgs = { inherit inputs; };
+              };
+            }
+          ];
+        };
+        specialArgs = { inherit inputs; };
       };
     };
-  nixConfig = {
-    extra-substituters = [ "https://ros.cachix.org" ];
-    extra-trusted-public-keys = [ "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo
-=" ];
-  };
 }

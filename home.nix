@@ -1,73 +1,84 @@
-{ config, pkgs, ... }:
-
+{ inputs, pkgs, ... }:
+let
+  lock-false = {
+    # Presets for preferences
+    Value = false;
+    Status = "locked";
+  };
+  lock-true = {
+    Value = true;
+    Status = "locked";
+  };
+in
 {
-  nixpkgs.config.allowUnfree = true; # required for vscode to be installed
-
-  home = {
-    username = "astra";
-    homeDirectory = "/home/astra";
-
-    # please read home manager release notes and docs before changing!
-    stateVersion = "24.11";
-
-    packages = with pkgs; [
-      firefox
-      ghostty
-      vscode
-      keepassxc
-      discord
-      vim
-      colcon
-      vlc
-    ] ++ (with pkgs.rosPackages.humble; [
-      ros-core
-    ]); # end packages
-
-    pointerCursor = {
-      name = "phinger-cursors-dark";
-      package = pkgs.phinger-cursors;
-      size = 48;
-      gtk.enable = true;
-      x11.enable = true;
-    }; # end pointerCursor
-
-    file = {
-    };
-
-    sessionVariables = {
-    };
-  }; # end home
-
-  qt = {
-    enable = true;
-  }; # end qt
-
-  gtk = {
-    enable = true;
-    cursorTheme = {
-      name = "phinger-cursors-light";
-      size = 48;
-    };
-    iconTheme = {
-      name = "Papirus-Dark";
-    };
-  }; # end gtk
+  imports = [
+    inputs.zen-browser.homeModules.twilight
+  ];
 
   programs = {
-    # let home manager manage itself
-    home-manager.enable = true;
-  }; # end programs
+    zen-browser = {
+      enable = true;
 
-  wayland = {
-    windowManager = {
-      sway = {
-        enable = true;
-        checkConfig = true;
+      nativeMessagingHosts = [ pkgs.firefoxpwa ];
 
-        config = {
+      policies = {
+        AutoFillAddressEnabled = false;
+        AutofillCreditCardEnabled = false;
+        DisableAppUpdate = false;
+        DisableFeedbackCommands = true;
+        DisableFirefoxStudies = true;
+        DontCheckDefaultBrowser = true;
+        NoDefaultBookmarks = true;
+        OfferToSaveLogins = true;
+        DisableSetDesktopBackground = true;
 
-        }; # end config
-      }; # end sway
-    }; # end windowManager
-  }; # end wayland
+        SearchEngines = {
+          Add = [
+            {
+              "Name" = "Unduck";
+              "URLTemplate" = "https://s.dunkirk.sh?q={searchTerms}";
+              "Method" = "GET";
+              "IconURL" = "https://s.dunkirk.sh/favicon.ico";
+              "Alias" = "undk";
+              "Description" = "ddg bangs pwa";
+            }
+          ];
+          Default = "Unduck";
+          PreventInstalls = true;
+        };
+
+        ExtensionSettings = {
+          "uBlock0@raymondhill.net" = {
+            # ublock
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "addon@darkreader.org" = {
+            # DarkReader
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "keepassxc-browser@keepassxc.org" = {
+            # Keepassxc
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/keepassxc_browser/latest.xpi";
+            installation_mode = "force_installed";
+          };
+        };
+
+        Preferences = {
+          "browser.warnOnQuitShortcut" = lock-false;
+          "browser.ctrlTab.sortByRecentlyUsed" = lock-true;
+          "browser.newtabpage.activity-stream.trendingSearch.defaultSearchEngine" = {
+            "Value" = "Unduck";
+            "Status" = "locked";
+          };
+          "browser.urlbar.suggest.clipboard" = lock-false;
+
+          "dom.security.https_only_mode" = lock-true;
+
+          "layers.acceleration.disabled" = lock-true;
+        };
+      };
+    };
+  };
 }
