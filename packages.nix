@@ -13,9 +13,9 @@ with pkgs;
   pkgs.dotnetCorePackages.sdk_9_0-bin
 
   # Creative
-  vim
   vlc
   logseq
+  neovim
   vscode-fhs
 
   # GStreamer

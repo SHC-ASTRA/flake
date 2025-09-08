@@ -31,9 +31,9 @@ echo
 
 # either use the default for the system, or use the one for a specified hostname
 if [[ -z $1 ]]; then
-	# nixos-rebuild switch
-# else
-	# nixos-rebuild switch --flake "/etc/nixos/#$1"
+	nixos-rebuild switch
+else
+	nixos-rebuild switch --flake "/etc/nixos/#$1"
 fi
 
 echo

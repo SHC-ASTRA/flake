@@ -58,6 +58,7 @@
         "root"
         "astra"
       ];
+      auto-optimise-store = true;
     };
   };
 
@@ -67,6 +68,7 @@
     extraGroups = [
       "wheel"
       "networkmanager"
+      "docker"
     ];
   };
 
@@ -98,7 +100,10 @@
     dconf.enable = true;
   };
 
+  virtualisation.docker.enable = true;
+
   services = {
+
     xserver.enable = false;
 
     # Enable the KDE Plasma Desktop Environment.
