@@ -104,6 +104,10 @@
 
   services = {
 
+    ros2 = {
+      enable = true;
+    };
+
     xserver.enable = false;
 
     # Enable the KDE Plasma Desktop Environment.

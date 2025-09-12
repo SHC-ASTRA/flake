@@ -3,8 +3,10 @@
 
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
+    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-unstable";
+      follows = "nix-ros-overlay/nixpkgs";
     };
     hardware.url = "github:nixos/nixos-hardware";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
@@ -17,6 +19,7 @@
   outputs =
     inputs@{
       self,
+      nix-ros-overlay,
       nixpkgs,
       home-manager,
       zen-browser,
@@ -29,6 +32,7 @@
           modules = [
             ./configuration.nix
             ./hardware-configuration.nix
+            nix-ros-overlay.nixosModules.default
 
             home-manager.nixosModules.home-manager
             {
@@ -45,4 +49,9 @@
         specialArgs = { inherit inputs; };
       };
     };
+
+  nixConfig = {
+    extra-substituters = [ "https://ros.cachix.org" ];
+    extra-trusted-public-keys = [ "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo=" ];
+  };
 }

@@ -1,11 +1,12 @@
 { pkgs, ... }:
-with pkgs;
-[
+(with pkgs; [
   # System
   baobab
   ffmpeg
   ghostty
   keepassxc
+
+  # ros
 
   # Programming
   gh
@@ -31,4 +32,7 @@ with pkgs;
   gst_all_1.gst-libav
   # Support the Video Audio (Hardware) Acceleration API
   gst_all_1.gst-vaapi
-]
+])
+++ (with pkgs.rosPackages.humble; [
+  ros-core
+])
