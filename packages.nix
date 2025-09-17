@@ -1,14 +1,13 @@
 { pkgs, ... }:
-(with pkgs; [
+with pkgs; [
   # System
   baobab
   ffmpeg
   ghostty
   keepassxc
 
-  # ros
-
   # Programming
+  nixfmt
   gh
   git
   pkgs.dotnetCorePackages.sdk_9_0-bin
@@ -32,7 +31,4 @@
   gst_all_1.gst-libav
   # Support the Video Audio (Hardware) Acceleration API
   gst_all_1.gst-vaapi
-])
-++ (with pkgs.rosPackages.humble; [
-  ros-core
-])
+]

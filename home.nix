@@ -9,13 +9,17 @@ let
     Value = true;
     Status = "locked";
   };
-in
-{
-  imports = [
-    inputs.zen-browser.homeModules.twilight
-  ];
+in {
+  imports = [ inputs.zen-browser.homeModules.twilight ];
 
   programs = {
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
+    };
+
     zen-browser = {
       enable = true;
 
@@ -33,16 +37,14 @@ in
         DisableSetDesktopBackground = true;
 
         SearchEngines = {
-          Add = [
-            {
-              "Name" = "Unduck";
-              "URLTemplate" = "https://s.dunkirk.sh?q={searchTerms}";
-              "Method" = "GET";
-              "IconURL" = "https://s.dunkirk.sh/favicon.ico";
-              "Alias" = "undk";
-              "Description" = "ddg bangs pwa";
-            }
-          ];
+          Add = [{
+            "Name" = "Unduck";
+            "URLTemplate" = "https://s.dunkirk.sh?q={searchTerms}";
+            "Method" = "GET";
+            "IconURL" = "https://s.dunkirk.sh/favicon.ico";
+            "Alias" = "undk";
+            "Description" = "ddg bangs pwa";
+          }];
           Default = "Unduck";
           PreventInstalls = true;
         };
@@ -50,17 +52,20 @@ in
         ExtensionSettings = {
           "uBlock0@raymondhill.net" = {
             # ublock
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+            install_url =
+              "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
             installation_mode = "force_installed";
           };
           "addon@darkreader.org" = {
             # DarkReader
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
+            install_url =
+              "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
             installation_mode = "force_installed";
           };
           "keepassxc-browser@keepassxc.org" = {
             # Keepassxc
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/keepassxc_browser/latest.xpi";
+            install_url =
+              "https://addons.mozilla.org/firefox/downloads/latest/keepassxc_browser/latest.xpi";
             installation_mode = "force_installed";
           };
         };
@@ -68,10 +73,11 @@ in
         Preferences = {
           "browser.warnOnQuitShortcut" = lock-false;
           "browser.ctrlTab.sortByRecentlyUsed" = lock-true;
-          "browser.newtabpage.activity-stream.trendingSearch.defaultSearchEngine" = {
-            "Value" = "Unduck";
-            "Status" = "locked";
-          };
+          "browser.newtabpage.activity-stream.trendingSearch.defaultSearchEngine" =
+            {
+              "Value" = "Unduck";
+              "Status" = "locked";
+            };
           "browser.urlbar.suggest.clipboard" = lock-false;
 
           "dom.security.https_only_mode" = lock-true;
