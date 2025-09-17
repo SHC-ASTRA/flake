@@ -17,37 +17,111 @@
   };
 
   outputs =
-    inputs@{
+    {
       self,
-      nix-ros-overlay,
       nixpkgs,
       home-manager,
       zen-browser,
       ...
-    }:
-    {
-      nixosConfigurations = {
-        astra = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./configuration.nix
-            ./hardware-configuration.nix
-            nix-ros-overlay.nixosModules.default
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-
-                users.astra = import ./home.nix;
-                extraSpecialArgs = { inherit inputs; };
-              };
-            }
-          ];
-        };
-        specialArgs = { inherit inputs; };
+    }@inputs:
+    let
+      system = "x86_64-linux";
+      username = "astra";
+      mkHost = import ./lib/mkHost.nix {
+        inherit inputs system;
       };
+
+      systemTypes = {
+        basestation = {
+          isGraphical = true;
+        };
+        tracking-antenna = {
+          isGraphical = false;
+        };
+        rover = {
+          isGraphical = false;
+        };
+      };
+
+      hosts = {
+        antenna = mkHost {
+          name = "antenna";
+	  inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.tracking-antenna;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.tracking-antenna;
+          };
+          isGraphical = false;
+        };
+
+        clucky = mkHost {
+          name = "clucky";
+	  inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.rover;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.rover;
+          };
+          isGraphical = false;
+        };
+
+        testbed = mkHost {
+          name = "testbed";
+	  inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.rover;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.rover;
+          };
+          isGraphical = false;
+        };
+
+        deck = mkHost {
+          name = "deck";
+	  inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.basestation;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.basestation;
+          };
+          isGraphical = true;
+        };
+
+        panda = mkHost {
+          name = "panda";
+	  inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.basestation;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = systemTypes.basestation;
+          };
+          isGraphical = true;
+        };
+      };
+    in
+    {
+      nixosConfigurations = builtins.mapAttrs (name: host: host.nixosConfig) hosts;
     };
 
   nixConfig = {
