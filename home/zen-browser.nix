@@ -24,7 +24,7 @@ in
     policies = {
       AutoFillAddressEnabled = false;
       AutofillCreditCardEnabled = false;
-      DisableAppUpdate = false;
+      DisableAppUpdate = true;
       DisableFeedbackCommands = true;
       DisableFirefoxStudies = true;
       DontCheckDefaultBrowser = true;
