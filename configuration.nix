@@ -68,19 +68,6 @@
     gwenview
   ];
 
-  home-manager = {
-    users.astra =
-      { ... }:
-      {
-        home = {
-          username = "astra";
-          homeDirectory = "/home/astra";
-
-          stateVersion = "25.05";
-        };
-      };
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -129,5 +116,5 @@
     };
   };
 
-  system.stateVersion = "25.11"; # DO NOT CHANGE THIS
+  system.stateVersion = "25.05";
 }
