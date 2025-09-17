@@ -27,7 +27,7 @@
     # Only include home-manager if a username is provided
     inputs.home-manager.nixosModules.home-manager
     inputs.nix-ros-overlay.nixosModules.default
-    ../configuration.nix
+    ../os
     {
       networking.hostName = name;
     }
@@ -49,7 +49,7 @@
           );
 
         users.${username} = {...}: {
-          imports = homeModules ++ [ ../home.nix ];
+          imports = homeModules ++ [ ../home ];
           # Set a reasonable default
           home.stateVersion = "25.05";
         };

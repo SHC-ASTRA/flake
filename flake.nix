@@ -17,28 +17,19 @@
   };
 
   outputs =
-    inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, zen-browser, ... }: {
-      nixosConfigurations = {
-        astra = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./configuration.nix
-            ./hardware-configuration.nix
-            nix-ros-overlay.nixosModules.default
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-
-                users.astra = import ./home.nix;
-                extraSpecialArgs = { inherit inputs; };
-              };
-            }
-          ];
-        };
-        specialArgs = { inherit inputs; };
+    inputs@{
+      self,
+      nix-ros-overlay,
+      nixpkgs,
+      home-manager,
+      zen-browser,
+      ...
+    }:
+    let
+      system = "x86_64-linux";
+      username = "astra";
+      mkHost = import ./lib/mkHost.nix {
+        inherit inputs system;
       };
 
       systemTypes = {
@@ -56,7 +47,7 @@
       hosts = {
         antenna = mkHost {
           name = "antenna";
-	  inherit username;
+          inherit username;
 
           extraSpecialArgs = {
             inherit self inputs;
@@ -71,7 +62,7 @@
 
         clucky = mkHost {
           name = "clucky";
-	  inherit username;
+          inherit username;
 
           extraSpecialArgs = {
             inherit self inputs;
@@ -86,7 +77,7 @@
 
         testbed = mkHost {
           name = "testbed";
-	  inherit username;
+          inherit username;
 
           extraSpecialArgs = {
             inherit self inputs;
@@ -101,7 +92,7 @@
 
         deck = mkHost {
           name = "deck";
-	  inherit username;
+          inherit username;
 
           extraSpecialArgs = {
             inherit self inputs;
@@ -116,7 +107,7 @@
 
         panda = mkHost {
           name = "panda";
-	  inherit username;
+          inherit username;
 
           extraSpecialArgs = {
             inherit self inputs;
@@ -136,7 +127,6 @@
 
   nixConfig = {
     extra-substituters = [ "https://ros.cachix.org" ];
-    extra-trusted-public-keys =
-      [ "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo=" ];
+    extra-trusted-public-keys = [ "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo=" ];
   };
 }

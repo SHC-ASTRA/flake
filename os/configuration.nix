@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # Bootloader.
   boot = {
     loader.systemd-boot.enable = true;
@@ -6,18 +7,10 @@
   };
 
   networking = {
+    # Firewall needs to be disabled
     firewall.enable = false;
     # Enable networking
     networkmanager.enable = true;
-
-    interfaces."enp1s0" = {
-      ipv4.addresses = [{
-        address = "192.168.1.31";
-        prefixLength = 24;
-      }];
-    };
-
-    firewall.enable = false;
   };
 
   # Set your time zone.
@@ -40,8 +33,6 @@
   };
 
   environment = {
-    systemPackages = import ./packages.nix { inherit pkgs; };
-
     plasma6.excludePackages = with pkgs.kdePackages; [
       kate
       elisa
@@ -50,13 +41,21 @@
       gwenview
     ];
 
-    sessionVariables = { EDITOR = "nvim"; };
+    sessionVariables = {
+      EDITOR = "nvim";
+    };
   };
 
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" "astra" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      trusted-users = [
+        "root"
+        "astra"
+      ];
       auto-optimise-store = true;
     };
   };
@@ -64,13 +63,19 @@
   users.users.astra = {
     isNormalUser = true;
     description = "ASTRA";
-    extraGroups = [ "wheel" "networkmanager" "docker" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "docker"
+    ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  programs = { dconf.enable = true; };
+  programs = {
+    dconf.enable = true;
+  };
 
   virtualisation.docker.enable = true;
 
@@ -80,7 +85,12 @@
       enable = true;
       distro = "humble";
 
-      systemPackages = p: with p; [ ros-core ros2cli ros2run ];
+      systemPackages =
+        p: with p; [
+          ros-core
+          ros2cli
+          ros2run
+        ];
     };
 
     xserver.enable = false;
