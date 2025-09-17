@@ -1,6 +1,5 @@
 { pkgs, ... }:
-with pkgs;
-[
+with pkgs; [
   # System
   baobab
   ffmpeg
@@ -8,6 +7,7 @@ with pkgs;
   keepassxc
 
   # Programming
+  nixfmt
   gh
   git
   pkgs.dotnetCorePackages.sdk_9_0-bin
