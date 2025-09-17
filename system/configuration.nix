@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ ... }: {
   # Bootloader.
   boot = {
     loader.systemd-boot.enable = true;
@@ -32,30 +31,12 @@
     };
   };
 
-  environment = {
-    plasma6.excludePackages = with pkgs.kdePackages; [
-      kate
-      elisa
-      okular
-      oxygen
-      gwenview
-    ];
-
-    sessionVariables = {
-      EDITOR = "nvim";
-    };
-  };
+  environment = { sessionVariables = { EDITOR = "nvim"; }; };
 
   nix = {
     settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      trusted-users = [
-        "root"
-        "astra"
-      ];
+      experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = [ "root" "astra" ];
       auto-optimise-store = true;
     };
   };
@@ -63,41 +44,23 @@
   users.users.astra = {
     isNormalUser = true;
     description = "ASTRA";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "docker"
-    ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  programs = {
-    dconf.enable = true;
-  };
+  programs = { dconf.enable = true; };
 
   virtualisation.docker.enable = true;
 
   services = {
-
     ros2 = {
       enable = true;
       distro = "humble";
 
-      systemPackages =
-        p: with p; [
-          ros-core
-          ros2cli
-          ros2run
-        ];
+      systemPackages = p: with p; [ ros-core ros2cli ros2run ];
     };
-
-    xserver.enable = false;
-
-    # Enable the KDE Plasma Desktop Environment.
-    displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
 
     # Enable sound with pipewire.
     pulseaudio.enable = false;

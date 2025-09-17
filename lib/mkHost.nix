@@ -27,7 +27,7 @@
     # Only include home-manager if a username is provided
     inputs.home-manager.nixosModules.home-manager
     inputs.nix-ros-overlay.nixosModules.default
-    ../os
+    ../system
     {
       networking.hostName = name;
     }
