@@ -1,14 +1,4 @@
-<<<<<<< HEAD
-{ pkgs, ... }:
-{
-=======
 { pkgs, ... }: {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
-
->>>>>>> origin/ros
   # Bootloader.
   boot = {
     loader.systemd-boot.enable = true;
@@ -16,11 +6,8 @@
   };
 
   networking = {
-<<<<<<< HEAD
+    firewall.enable = false;
     # Enable networking
-=======
-    hostName = "astra"; # Define your hostname.
->>>>>>> origin/ros
     networkmanager.enable = true;
 
     interfaces."enp1s0" = {
@@ -79,27 +66,6 @@
     description = "ASTRA";
     extraGroups = [ "wheel" "networkmanager" "docker" ];
   };
-
-<<<<<<< HEAD
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    kate
-    elisa
-    okular
-    oxygen
-    gwenview
-  ];
-=======
-  home-manager = {
-    users.astra = { ... }: {
-      home = {
-        username = "astra";
-        homeDirectory = "/home/astra";
-
-        stateVersion = "25.05";
-      };
-    };
-  };
->>>>>>> origin/ros
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

@@ -11,7 +11,7 @@
     hardware.url = "github:nixos/nixos-hardware";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
