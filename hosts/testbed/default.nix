@@ -1,6 +1,6 @@
 { ... }:
 {
   imports = [
-    ../clucky
+    ./hardware.nix
   ];
 }

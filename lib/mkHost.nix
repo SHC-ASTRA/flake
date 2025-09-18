@@ -36,17 +36,12 @@
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        extraSpecialArgs =
-          {
-            inherit inputs system;
-            # Only include GUI-related inputs for desktop systems
-            inherit (homeSpecialArgs) self;
-          }
-          // (
-            if isGraphical
-            then homeSpecialArgs
-            else {}
-          );
+        extraSpecialArgs = {
+          inherit inputs system;
+          host = {
+            inherit name isGraphical;
+          };
+        };
 
         users.${username} = {...}: {
           imports = homeModules ++ [ ../home ];
