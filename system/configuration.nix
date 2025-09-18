@@ -59,7 +59,14 @@
       enable = true;
       distro = "humble";
 
-      systemPackages = p: with p; [ ros-core ros2cli ros2run ];
+      systemPackages = p:
+        with p; [
+          ros-core
+          ros2cli
+          ros2run
+          ament-cmake-core
+          python-cmake-module
+        ];
     };
 
     # Enable sound with pipewire.

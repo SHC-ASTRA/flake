@@ -9,6 +9,12 @@
       ripgrep
       silver-searcher
       neovim
+
+      # build stuff
+      colcon
+      python312Packages.pyserial
+      gnumake
+      gcc
     ] ++ (if host.isGraphical then [
       # Apps
       vlc
