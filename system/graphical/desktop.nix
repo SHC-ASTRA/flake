@@ -11,7 +11,13 @@
     xserver.enable = false;
 
     # Enable the KDE Plasma Desktop Environment.
-    displayManager.sddm.enable = true;
+    displayManager = {
+      autoLogin = {
+        enable = true;
+        user = "astra";
+      };
+      sddm.enable = true;
+    };
     desktopManager.plasma6.enable = true;
   };
 }

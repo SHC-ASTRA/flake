@@ -8,6 +8,7 @@
     ripgrep
     silver-searcher
     neovim
+    fastfetch
 
     # build stuff
     colcon

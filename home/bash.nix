@@ -5,7 +5,10 @@
     bash = {
       enable = true;
       enableCompletion = true;
-      shellAliases = { la = "ls -alh"; };
+      shellAliases = {
+        la = "ls -alh";
+	neofetch = "fastfetch";
+      };
     };
 
     bat.enable = true;

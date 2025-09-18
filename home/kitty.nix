@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, host, ... }: {
   programs.kitty = {
-    enable = true;
+    enable = host.isGraphical;
     font = {
       name = "FiraCode Nerd Font";
       package = pkgs.nerd-fonts.fira-code;
