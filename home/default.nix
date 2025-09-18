@@ -6,5 +6,6 @@
     ./starship.nix
     ./bash.nix
     ./kitty.nix
+    ./ssh.nix
   ];
 }

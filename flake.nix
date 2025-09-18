@@ -17,29 +17,31 @@
   };
 
   outputs =
-    inputs@{
-      self,
-      nix-ros-overlay,
-      nixpkgs,
-      home-manager,
-      zen-browser,
-      ...
-    }:
+    inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, zen-browser, ... }:
     let
       system = "x86_64-linux";
       username = "astra";
-      mkHost = import ./lib/mkHost.nix {
-        inherit inputs system;
-      };
+      mkHost = import ./lib/mkHost.nix { inherit inputs system; };
 
-      systemTypes = {
-        basestation = {
-          isGraphical = true;
-        };
-        tracking-antenna = {
+      hostsConfig = {
+        antenna = {
+          ip = "192.168.1.33";
           isGraphical = false;
         };
-        rover = {
+        clucky = {
+          ip = "192.168.1.69";
+          isGraphical = false;
+        };
+        deck = {
+          ip = "192.168.1.31";
+          isGraphical = true;
+        };
+        panda = {
+          ip = "192.168.1.32";
+          isGraphical = true;
+        };
+        testbed = {
+          ip = "192.168.1.70";
           isGraphical = false;
         };
       };
@@ -51,13 +53,15 @@
 
           extraSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.tracking-antenna;
+            host = hostsConfig.antenna;
+            hosts = hostsConfig;
           };
           homeSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.tracking-antenna;
+            host = hostsConfig.antenna;
+            hosts = hostsConfig;
           };
-          isGraphical = false;
+          isGraphical = hostsConfig.antenna.isGraphical;
         };
 
         clucky = mkHost {
@@ -66,13 +70,15 @@
 
           extraSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.rover;
+            host = hostsConfig.clucky;
+            hosts = hostsConfig;
           };
           homeSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.rover;
+            host = hostsConfig.clucky;
+            hosts = hostsConfig;
           };
-          isGraphical = false;
+          isGraphical = hostsConfig.clucky.isGraphical;
         };
 
         testbed = mkHost {
@@ -81,13 +87,15 @@
 
           extraSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.rover;
+            host = hostsConfig.testbed;
+            hosts = hostsConfig;
           };
           homeSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.rover;
+            host = hostsConfig.testbed;
+            hosts = hostsConfig;
           };
-          isGraphical = false;
+          isGraphical = hostsConfig.testbed.isGraphical;
         };
 
         deck = mkHost {
@@ -96,13 +104,15 @@
 
           extraSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.basestation;
+            host = hostsConfig.deck;
+            hosts = hostsConfig;
           };
           homeSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.basestation;
+            host = hostsConfig.deck;
+            hosts = hostsConfig;
           };
-          isGraphical = true;
+          isGraphical = hostsConfig.deck.isGraphical;
         };
 
         panda = mkHost {
@@ -111,22 +121,25 @@
 
           extraSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.basestation;
+            host = hostsConfig.panda;
+            hosts = hostsConfig;
           };
           homeSpecialArgs = {
             inherit self inputs;
-            host = systemTypes.basestation;
+            host = hostsConfig.panda;
+            hosts = hostsConfig;
           };
-          isGraphical = true;
+          isGraphical = hostsConfig.panda.isGraphical;
         };
       };
-    in
-    {
-      nixosConfigurations = builtins.mapAttrs (name: host: host.nixosConfig) hosts;
+    in {
+      nixosConfigurations =
+        builtins.mapAttrs (name: host: host.nixosConfig) hosts;
     };
 
   nixConfig = {
     extra-substituters = [ "https://ros.cachix.org" ];
-    extra-trusted-public-keys = [ "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo=" ];
+    extra-trusted-public-keys =
+      [ "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo=" ];
   };
 }
