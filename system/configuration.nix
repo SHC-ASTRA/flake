@@ -31,7 +31,7 @@
     };
   };
 
-  environment = { sessionVariables = { EDITOR = "nvim"; }; };
+  environment.sessionVariables.EDITOR = "nvim";
 
   nix = {
     settings = {

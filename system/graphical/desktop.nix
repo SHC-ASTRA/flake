@@ -1,5 +1,4 @@
-{ host, pkgs, ... }:
-if host.isGraphical then {
+{ pkgs, ... }: {
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
     kate
     elisa
@@ -15,5 +14,4 @@ if host.isGraphical then {
     displayManager.sddm.enable = true;
     desktopManager.plasma6.enable = true;
   };
-} else
-  { }
+}

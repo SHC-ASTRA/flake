@@ -1,4 +1,5 @@
 { inputs, pkgs, host, ... }:
+# only install zen browser if we have a graphical system
 if host.isGraphical then
   (let
     lock-false = {

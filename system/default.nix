@@ -1,8 +1,4 @@
-{ ... }:
-{
-  imports = [
-    ./configuration.nix
-    ./packages.nix
-    ./desktop.nix
-  ];
+{ host, ... }: {
+  imports = [ ./configuration.nix ./packages.nix ]
+    ++ (if host.isGraphical then [ ./graphical ] else [ ]);
 }
