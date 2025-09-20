@@ -5,13 +5,6 @@
     loader.efi.canTouchEfiVariables = true;
   };
 
-  networking = {
-    # Firewall needs to be disabled
-    firewall.enable = false;
-    # Enable networking
-    networkmanager.enable = true;
-  };
-
   # Set your time zone.
   time.timeZone = "America/Chicago";
 
