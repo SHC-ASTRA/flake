@@ -1,26 +1,20 @@
-{ inputs, pkgs, ... }:
-let
-  lock-false = {
-    # Presets for preferences
-    Value = false;
-    Status = "locked";
-  };
-  lock-true = {
-    Value = true;
-    Status = "locked";
-  };
-in {
-  imports = [ inputs.zen-browser.homeModules.twilight ];
-
-  programs = {
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
+{ inputs, pkgs, host, ... }:
+# only install zen browser if we have a graphical system
+if host.isGraphical then
+  (let
+    lock-false = {
+      # Presets for preferences
+      Value = false;
+      Status = "locked";
     };
+    lock-true = {
+      Value = true;
+      Status = "locked";
+    };
+  in {
+    imports = [ inputs.zen-browser.homeModules.twilight ];
 
-    zen-browser = {
+    programs.zen-browser = {
       enable = true;
 
       nativeMessagingHosts = [ pkgs.firefoxpwa ];
@@ -28,7 +22,7 @@ in {
       policies = {
         AutoFillAddressEnabled = false;
         AutofillCreditCardEnabled = false;
-        DisableAppUpdate = false;
+        DisableAppUpdate = true;
         DisableFeedbackCommands = true;
         DisableFirefoxStudies = true;
         DontCheckDefaultBrowser = true;
@@ -86,5 +80,6 @@ in {
         };
       };
     };
-  };
-}
+  })
+else
+  { }

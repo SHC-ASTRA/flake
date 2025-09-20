@@ -11,35 +11,130 @@
     hardware.url = "github:nixos/nixos-hardware";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
-    inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, zen-browser, ... }: {
-      nixosConfigurations = {
-        astra = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./configuration.nix
-            ./hardware-configuration.nix
-            nix-ros-overlay.nixosModules.default
+    inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, zen-browser, ... }:
+    let
+      system = "x86_64-linux";
+      username = "astra";
+      mkHost = import ./lib/mkHost.nix { inherit inputs system; };
 
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-
-                users.astra = import ./home.nix;
-                extraSpecialArgs = { inherit inputs; };
-              };
-            }
-          ];
+      hostsConfig = {
+        antenna = {
+          ip = "192.168.1.33";
+          isGraphical = false;
         };
-        specialArgs = { inherit inputs; };
+        clucky = {
+          ip = "192.168.1.69";
+          isGraphical = false;
+        };
+        deck = {
+          ip = "192.168.1.31";
+          isGraphical = true;
+        };
+        panda = {
+          ip = "192.168.1.32";
+          isGraphical = true;
+        };
+        testbed = {
+          ip = "192.168.1.70";
+          isGraphical = false;
+        };
       };
+
+      hosts = {
+        antenna = mkHost {
+          name = "antenna";
+          inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.antenna;
+            hosts = hostsConfig;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.antenna;
+            hosts = hostsConfig;
+          };
+          isGraphical = hostsConfig.antenna.isGraphical;
+        };
+
+        clucky = mkHost {
+          name = "clucky";
+          inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.clucky;
+            hosts = hostsConfig;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.clucky;
+            hosts = hostsConfig;
+          };
+          isGraphical = hostsConfig.clucky.isGraphical;
+        };
+
+        testbed = mkHost {
+          name = "testbed";
+          inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.testbed;
+            hosts = hostsConfig;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.testbed;
+            hosts = hostsConfig;
+          };
+          isGraphical = hostsConfig.testbed.isGraphical;
+        };
+
+        deck = mkHost {
+          name = "deck";
+          inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.deck;
+            hosts = hostsConfig;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.deck;
+            hosts = hostsConfig;
+          };
+          isGraphical = hostsConfig.deck.isGraphical;
+        };
+
+        panda = mkHost {
+          name = "panda";
+          inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.panda;
+            hosts = hostsConfig;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.panda;
+            hosts = hostsConfig;
+          };
+          isGraphical = hostsConfig.panda.isGraphical;
+        };
+      };
+    in {
+      nixosConfigurations =
+        builtins.mapAttrs (name: host: host.nixosConfig) hosts;
     };
 
   nixConfig = {

@@ -1,9 +1,4 @@
-{ pkgs, ... }: {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
-
+{ ... }: {
   # Bootloader.
   boot = {
     loader.systemd-boot.enable = true;
@@ -11,17 +6,10 @@
   };
 
   networking = {
-    hostName = "astra"; # Define your hostname.
-    networkmanager.enable = true;
-
-    interfaces."enp1s0" = {
-      ipv4.addresses = [{
-        address = "192.168.1.31";
-        prefixLength = 24;
-      }];
-    };
-
+    # Firewall needs to be disabled
     firewall.enable = false;
+    # Enable networking
+    networkmanager.enable = true;
   };
 
   # Set your time zone.
@@ -43,19 +31,7 @@
     };
   };
 
-  environment = {
-    systemPackages = import ./packages.nix { inherit pkgs; };
-
-    plasma6.excludePackages = with pkgs.kdePackages; [
-      kate
-      elisa
-      okular
-      oxygen
-      gwenview
-    ];
-
-    sessionVariables = { EDITOR = "nvim"; };
-  };
+  environment.sessionVariables.EDITOR = "nvim";
 
   nix = {
     settings = {
@@ -71,17 +47,6 @@
     extraGroups = [ "wheel" "networkmanager" "docker" ];
   };
 
-  home-manager = {
-    users.astra = { ... }: {
-      home = {
-        username = "astra";
-        homeDirectory = "/home/astra";
-
-        stateVersion = "25.05";
-      };
-    };
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -90,19 +55,19 @@
   virtualisation.docker.enable = true;
 
   services = {
-
     ros2 = {
       enable = true;
       distro = "humble";
 
-      systemPackages = p: with p; [ ros-core ros2cli ros2run ];
+      systemPackages = p:
+        with p; [
+          ros-core
+          ros2cli
+          ros2run
+          ament-cmake-core
+          python-cmake-module
+        ];
     };
-
-    xserver.enable = false;
-
-    # Enable the KDE Plasma Desktop Environment.
-    displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
 
     # Enable sound with pipewire.
     pulseaudio.enable = false;
@@ -131,5 +96,5 @@
     };
   };
 
-  system.stateVersion = "25.11"; # DO NOT CHANGE THIS
+  system.stateVersion = "25.05";
 }
