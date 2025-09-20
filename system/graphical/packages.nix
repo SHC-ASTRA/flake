@@ -2,9 +2,7 @@
   environment.systemPackages = with pkgs; [
     # Apps
     vlc
-    logseq
     vscode-fhs
-    baobab
     keepassxc
 
     # GStreamer
