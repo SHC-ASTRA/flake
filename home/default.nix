@@ -2,7 +2,7 @@
 {
   imports = [
     ./neovim.nix
-    ./zen-browser.nix
+    ./firefox.nix
     ./starship.nix
     ./bash.nix
     ./kitty.nix

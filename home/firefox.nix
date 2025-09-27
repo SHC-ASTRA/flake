@@ -1,5 +1,5 @@
 { inputs, pkgs, host, ... }:
-# only install zen browser if we have a graphical system
+# only install firefox browser if we have a graphical system
 if host.isGraphical then
   (let
     lock-false = {
@@ -12,9 +12,7 @@ if host.isGraphical then
       Status = "locked";
     };
   in {
-    imports = [ inputs.zen-browser.homeModules.twilight ];
-
-    programs.zen-browser = {
+    programs.firefox = {
       enable = true;
 
       nativeMessagingHosts = [ pkgs.firefoxpwa ];

@@ -9,7 +9,6 @@
       follows = "nix-ros-overlay/nixpkgs";
     };
     hardware.url = "github:nixos/nixos-hardware";
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +16,7 @@
   };
 
   outputs =
-    inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, zen-browser, ... }:
+    inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
       username = "astra";
