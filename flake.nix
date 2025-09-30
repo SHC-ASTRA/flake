@@ -16,10 +16,20 @@
     basestation-cameras.url = "github:SHC-ASTRA/basestation-cameras";
   };
 
-  outputs = inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, zen-browser, basestation-cameras, ... }:
+  outputs =
+    inputs@{
+      self,
+      nix-ros-overlay,
+      nixpkgs,
+      home-manager,
+      basestation-cameras,
+      ...
+    }:
     let
       system = "x86_64-linux";
       username = "astra";
+
+      # Obtains the function mkHost passing 'inputs' and 'system'
       mkHost = import ./lib/mkHost.nix { inherit inputs system; };
 
       hostsConfig = {
@@ -45,6 +55,7 @@
         };
       };
 
+      # Generates hosts for each system based on hostsConfig
       hosts = {
         antenna = mkHost {
           name = "antenna";
@@ -131,14 +142,14 @@
           isGraphical = hostsConfig.panda.isGraphical;
         };
       };
-    in {
-      nixosConfigurations =
-        builtins.mapAttrs (name: host: host.nixosConfig) hosts;
+    in
+    {
+      nixosConfigurations = builtins.mapAttrs (name: host: host.nixosConfig) hosts;
     };
 
   nixConfig = {
+    # Cache to pull ros packages from
     extra-substituters = [ "https://ros.cachix.org" ];
-    extra-trusted-public-keys =
-      [ "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo=" ];
+    extra-trusted-public-keys = [ "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo=" ];
   };
 }

@@ -2,7 +2,7 @@
   environment.systemPackages = with pkgs; [
     # Apps
     vlc
-    vscode-fhs
+    vscode-fhs # Needed for basestation-classic
     keepassxc
 
     # GStreamer
