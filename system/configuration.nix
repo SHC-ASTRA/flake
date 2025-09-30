@@ -62,7 +62,6 @@
         ];
     };
 
-    # Enable sound with pipewire.
     pulseaudio.enable = false;
 
     pipewire = {

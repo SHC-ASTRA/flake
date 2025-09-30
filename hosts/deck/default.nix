@@ -1,1 +1,6 @@
-{ ... }: { imports = [ ./hardware.nix ./network.nix ]; }
+{ pkgs, ... }: { imports = [ ./hardware.nix ./network.nix ];
+    environment.systemPackages = with pkgs; [
+        zed-editor
+        nixd
+    ];
+}

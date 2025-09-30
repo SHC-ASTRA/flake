@@ -7,7 +7,7 @@
       enableCompletion = true;
       shellAliases = {
         la = "ls -alh";
-	neofetch = "fastfetch";
+        neofetch = "fastfetch";
       };
     };
 
