@@ -13,10 +13,10 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    basestation-cameras.url = "github:SHC-ASTRA/basestation-cameras";
   };
 
-  outputs =
-    inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, ... }:
+  outputs = inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, zen-browser, basestation-cameras, ... }:
     let
       system = "x86_64-linux";
       username = "astra";

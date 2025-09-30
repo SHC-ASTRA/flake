@@ -7,5 +7,6 @@
     ./bash.nix
     ./kitty.nix
     ./ssh.nix
+    ./basestation-cameras.nix
   ];
 }
