@@ -1,20 +1,21 @@
 { pkgs, ... }: {
   environment.systemPackages = with pkgs; [
-    nixfmt
-    nil
+    # System
     gh
-    socat
-
     git
-    # pkgs.dotnetCorePackages.sdk_9_0-bin
-    ripgrep
+    socat
     silver-searcher
-    neovim
 
-    # build stuff
-    colcon
-    python312Packages.pyserial
-    gnumake
+    # Programming
+    nil
+    nixfmt
+    neovim
+    ripgrep
+
+    # Build stuff
     gcc
+    colcon
+    gnumake
+    python312Packages.pyserial
   ];
 }

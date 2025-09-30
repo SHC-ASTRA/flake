@@ -6,5 +6,6 @@
     networkmanager.enable = true;
   };
 
+  # Doesn't actually work for some reason.
   systemd.network.wait-online.timeout = 5;
 }

@@ -16,10 +16,15 @@
     basestation-cameras.url = "github:SHC-ASTRA/basestation-cameras";
   };
 
-  outputs = inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, zen-browser, basestation-cameras, ... }:
+  outputs =
+  # Ingests variables described in prior 'inputs' function (#4), outputs as 'inputs'
+  inputs@{ self, nix-ros-overlay, nixpkgs, home-manager, zen-browser, basestation-cameras, ... }:
     let
       system = "x86_64-linux";
       username = "astra";
+
+      # Sends 'inputs' variable (#21) to all hosts via specialArgs and extraSpecialArgs inside of mkHost.
+      # Also identifies the global system configuration for packages.
       mkHost = import ./lib/mkHost.nix { inherit inputs system; };
 
       hostsConfig = {
@@ -45,6 +50,7 @@
         };
       };
 
+      # Copypaste section, aggregates previously defined information.
       hosts = {
         antenna = mkHost {
           name = "antenna";
@@ -137,6 +143,7 @@
     };
 
   nixConfig = {
+    # Required to acquire ROS packages
     extra-substituters = [ "https://ros.cachix.org" ];
     extra-trusted-public-keys =
       [ "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo=" ];
