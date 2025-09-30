@@ -22,7 +22,6 @@
       nix-ros-overlay,
       nixpkgs,
       home-manager,
-      zen-browser,
       basestation-cameras,
       ...
     }:
