@@ -1,13 +1,16 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   environment.systemPackages = with pkgs; [
     # System
     gh
     git
     socat
+    usbutils
     silver-searcher
 
     # Programming
     nil
+    nixd
     nixfmt
     neovim
     ripgrep
