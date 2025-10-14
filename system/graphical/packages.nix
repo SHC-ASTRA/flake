@@ -9,11 +9,6 @@
     vscode-fhs # Needed for basestation-classic
     gnome-keyring
 
-    #OSKs
-    onboard
-    squeekboard
-    maliit-keyboard
-
     # GStreamer
     gst_all_1.gstreamer
     # Common plugins like "filesrc" to combine within e.g. gst-launch
