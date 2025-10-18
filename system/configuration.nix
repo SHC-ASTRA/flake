@@ -34,7 +34,7 @@
   users.users.astra = {
     isNormalUser = true;
     description = "ASTRA";
-    extraGroups = [ "wheel" "hostapd" "docker" ];
+    extraGroups = [ "wheel" "hostapd" "docker" "dialout" ];
   };
 
   nixpkgs.config.allowUnfree = true;
