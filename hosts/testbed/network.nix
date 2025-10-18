@@ -3,17 +3,24 @@
   environment.systemPackages = [
     pkgs.hostapd
   ];
-  
-  services = {
-    hostapd = {
-      enable = true;
-      radios.wlp0s20fu6u4.networks.wlp0s20fu6u4 = {
-        ssid = "testbed";
-        apIsolate = false;
-        authentication = {
-          wpaPassword = "opticslabisclosed";
-          mode = "wpa2-sha256";
-        };
+
+  netowrking.interfaces."enp1s0" = {
+    ipv4.addresses = [
+      {
+        address = "192.168.1.32";
+        prefixLength = 24;
+      }
+    ];
+  };
+
+  services.hostapd = {
+    enable = true;
+    radios."wlp0s20fu6u4".networks."wlp0s20fu6u4" = {
+      ssid = "testbed";
+      apIsolate = false;
+      authentication = {
+        wpaPassword = "opticslabisclosed";
+        mode = "wpa2-sha256";
       };
     };
   };
