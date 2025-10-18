@@ -2,7 +2,6 @@
   description = "Home Manager configuration of ASTRA";
 
   inputs = {
-    # Specify the source of Home Manager and Nixpkgs.
     nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-25.05";

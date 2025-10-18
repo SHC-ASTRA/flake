@@ -26,18 +26,15 @@
 
   environment.sessionVariables.EDITOR = "nvim";
 
-  nix = {
-    settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" "astra" ];
-      auto-optimise-store = true;
-    };
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    trusted-users = [ "root" "astra" ];
   };
 
   users.users.astra = {
     isNormalUser = true;
     description = "ASTRA";
-    extraGroups = [ "wheel" "networkmanager" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "hostapd" "docker" "dialout" ];
   };
 
   nixpkgs.config.allowUnfree = true;
