@@ -1,4 +1,4 @@
-{ inputs, pkgs, host, ... }:
+{ pkgs, host, ... }:
 # only install firefox browser if we have a graphical system
 if host.isGraphical then
   (let

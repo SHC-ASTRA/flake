@@ -1,9 +1,13 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   environment.systemPackages = with pkgs; [
     # Apps
     vlc
-    vscode-fhs # Needed for basestation-classic
+    kitty
+    nautilus
     keepassxc
+    vscode-fhs # Needed for basestation-classic
+    gnome-keyring
 
     # GStreamer
     gst_all_1.gstreamer
