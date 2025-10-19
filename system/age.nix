@@ -1,5 +1,8 @@
-{ ... }:
+{ inputs, pkgs, ... }:
 {
+  environment.systemPackages = [
+    inputs.agenix.packages.${pkgs.system}.default
+  ];
   age.secrets = {
     id_ed25519-key = {
       file = ./secrets/id_ed25519-key.age;

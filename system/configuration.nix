@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   # Bootloader.
   boot = {
     loader.systemd-boot.enable = true;
@@ -27,19 +28,33 @@
   environment.sessionVariables.EDITOR = "nvim";
 
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    trusted-users = [ "root" "astra" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [
+      "root"
+      "astra"
+    ];
   };
 
   users.users.astra = {
     isNormalUser = true;
     description = "ASTRA";
-    extraGroups = [ "wheel" "hostapd" "docker" "dialout" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "hostapd"
+      "docker"
+      "dialout"
+    ];
   };
 
   nixpkgs.config.allowUnfree = true;
 
-  programs = { dconf.enable = true; };
+  programs = {
+    dconf.enable = true;
+  };
 
   virtualisation.docker.enable = true;
 
@@ -48,8 +63,8 @@
       enable = true;
       distro = "humble";
 
-      systemPackages = p:
-        with p; [
+      systemPackages =
+        p: with p; [
           ros-core
           ros2cli
           ros2run

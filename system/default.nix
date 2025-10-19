@@ -5,7 +5,8 @@
     ./packages.nix
     ./network.nix
     ./age.nix
-  ] ++ (if host.isGraphical then [ ./graphical ] else [ ]);
+  ]
+  ++ (if host.isGraphical then [ ./graphical ] else [ ]);
 
   boot.extraModulePackages = [
     config.boot.kernelPackages.rtl88xxau-aircrack
