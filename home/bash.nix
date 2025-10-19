@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   home.shell.enableBashIntegration = true;
 
   programs = {
@@ -25,6 +26,12 @@
       enable = true;
       colors = "auto";
       icons = "auto";
+    };
+
+    direnv = {
+      enable = true;
+      enableBashIntegration = true;
+      nix-direnv.enable = true;
     };
   };
 }
