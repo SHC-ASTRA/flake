@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   # Bootloader.
   boot = {
@@ -47,6 +47,8 @@
       "hostapd"
       "docker"
       "dialout"
+      "input"
+      "usb"
     ];
   };
 
@@ -59,6 +61,11 @@
   virtualisation.docker.enable = true;
 
   services = {
+    udev = {
+      packages = [
+        pkgs.steam-devices-udev-rules
+      ];
+    };
     ros2 = {
       enable = true;
       distro = "humble";
