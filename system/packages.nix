@@ -13,6 +13,7 @@
     neovim
     ripgrep
     nixfmt-rfc-style
+    tmux
 
     # Build stuff
     gcc
