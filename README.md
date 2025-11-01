@@ -52,8 +52,8 @@ git clone https://github.com/SHC-ASTRA/flake.git /etc/nixos
 ```
 
 Second, modify the flake to match your installation. Depending on which system
-you're installing on, you'll need to select the correct hostname. Here's the
-list:
+you're installing on, you'll need to select the correct hostname. Replace
+`${hostname}` with the one you select. Here's the list:
 
 - Tracking Antenna: `antenna`
 - Clucky: `clucky`
@@ -64,14 +64,14 @@ list:
 ```bash
 # generate the hardware configuration and copy it to the right host
 nixos-generate-config
-mv /etc/nixos/hardware-configuration.nix /etc/nixos/hosts/{hostname}/hardware.nix
+mv /etc/nixos/hardware-configuration.nix /etc/nixos/hosts/${hostname}/hardware.nix
 ```
 
 Third, actually install the flake.
 
 ```bash
 # rebuild the system, selecting the new hostname
-sudo nixos-rebuild switch --flake /etc/nixos/#{hostname}
+sudo nixos-rebuild switch --flake /etc/nixos/#${hostname}
 ```
 
 Finally, reboot and if all went well you should have the system configuration!
@@ -90,7 +90,7 @@ can do the following:
 cd path/to/flake/
 
 # attempt to build the flake
-nixos-rebuild build --flake .#{hostname}
+nixos-rebuild build --flake .#${hostname}
 ```
 If you're on an ASTRA system and you want to see if the configuration works
 without adding it to the bootloader, you can do this instead:
@@ -129,8 +129,9 @@ The configured channels can be seen in [`flake.nix`](./flake.nix).
 
 ## Rationale
 
-Using NixOS lets us ensure we have the same configuration between Testbed and
-Clucky, without having to worry about accumulating state that might cause
+Using NixOS lets us ensure we have the same configuration between our various
+machines, without having to worry about accumulating state that might cause
 differences in the field. This gives us the ability to confidently test on
 Testbed and then ship to Clucky without having to worry if some package or
-setting might be missing from one of them.
+setting might be missing from one of them, and to ensure the experience between
+the Steam Deck and the Panda in the Base Station chassis are the same.
