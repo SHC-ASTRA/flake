@@ -59,6 +59,10 @@
           ip = "192.168.1.70";
           isGraphical = false;
         };
+        nixos = {
+          ip = "";
+          isGraphical = true;
+        };
       };
 
       # Generates hosts for each system based on hostsConfig
@@ -146,6 +150,23 @@
             hosts = hostsConfig;
           };
           isGraphical = hostsConfig.panda.isGraphical;
+        };
+
+        nixos = mkHost {
+          name = "nixos";
+          inherit username;
+
+          extraSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.nixos;
+            hosts = hostsConfig;
+          };
+          homeSpecialArgs = {
+            inherit self inputs;
+            host = hostsConfig.nixos;
+            hosts = hostsConfig;
+          };
+          isGraphical = hosts.isGraphical;
         };
       };
     in
