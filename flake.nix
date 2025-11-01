@@ -166,7 +166,7 @@
             host = hostsConfig.nixos;
             hosts = hostsConfig;
           };
-          isGraphical = hosts.isGraphical;
+          isGraphical = hostsConfig.nixos.isGraphical;
         };
       };
     in
