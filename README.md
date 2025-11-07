@@ -8,6 +8,10 @@ You must have [NixOS](https://nixos.org) installed to use this repository.
 
 ## Usage
 
+> [!IMPORTANT]
+> Slow down! Read through the instructions for what you're doing before you
+> start doing it. You can't simply copy commands one-for-one!
+
 ### Updating Flake
 
 Grab the latest changes.
@@ -38,7 +42,7 @@ sudo nixos-rebuild boot
 > These instructions will overwrite your current system configuration with
 > the ASTRA one. Only use on a system where you're sure this is okay!
 
-First, prepare the system for setup.
+First, connect to wifi and prepare the system for setup.
 
 ```bash
 # take ownership of the installation path
@@ -48,7 +52,8 @@ sudo chown -R $USER /etc/nixos
 rm -rf /etc/nixos/*
 
 # clone flake to correct path
-git clone https://github.com/SHC-ASTRA/flake.git /etc/nixos
+# we need to use nix-shell here because new systems do not have git installed.
+nix-shell -p git --run 'git clone https://github.com/SHC-ASTRA/flake.git /etc/nixos'
 ```
 
 Second, modify the flake to match your installation. Depending on which system
@@ -74,11 +79,14 @@ Third, actually install the flake.
 sudo nixos-rebuild switch --flake /etc/nixos/#${hostname}
 ```
 
-Finally, reboot and if all went well you should have the system configuration!
+Fourth, reboot and if all went well you should have the system configuration!
 
 > [!NOTE]
 > The `astra` user will be created if it doesn't already exist, and the
 > hostname will be updated to the one you specified.
+
+You'll also need to rekey the agenix secrets. Instructions for doing so can be
+found in [`system/secrets/README.md`](./system/secrets/README.md).
 
 ### Testing the Flake
 
