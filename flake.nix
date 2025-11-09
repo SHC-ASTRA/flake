@@ -7,6 +7,9 @@
       url = "github:nixos/nixpkgs/nixos-25.05";
       follows = "nix-ros-overlay/nixpkgs";
     };
+    nixpkgs-unstable = {
+	url = "github:nixos/nixpkgs/nixos-unstable";
+    };
     hardware.url = "github:nixos/nixos-hardware";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -28,15 +31,20 @@
       nix-ros-overlay,
       nixpkgs,
       home-manager,
+      nixpkgs-unstable,
       basestation-cameras,
       ...
     }:
     let
       system = "x86_64-linux";
       username = "astra";
-
+      unstable = import nixpkgs-unstable {
+	inherit system;
+	inherit nixpkgs;
+	config.allowUnfree = true;
+      };
       # Obtains the function mkHost passing 'inputs' and 'system'
-      mkHost = import ./lib/mkHost.nix { inherit inputs system; };
+      mkHost = import ./lib/mkHost.nix { inherit inputs system unstable; };
 
       hostsConfig = {
         antenna = {
@@ -123,12 +131,12 @@
           inherit username;
 
           extraSpecialArgs = {
-            inherit self inputs;
+            inherit self inputs unstable;
             host = hostsConfig.deck;
             hosts = hostsConfig;
           };
           homeSpecialArgs = {
-            inherit self inputs;
+            inherit self inputs unstable;
             host = hostsConfig.deck;
             hosts = hostsConfig;
           };

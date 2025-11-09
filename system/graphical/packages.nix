@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, unstable, ... }:
 {
   environment.systemPackages = with pkgs; [
     # Apps
@@ -21,5 +21,7 @@
     gst_all_1.gst-libav
     # Support the Video Audio (Hardware) Acceleration API
     gst_all_1.gst-vaapi
-  ];
+  ] ++ ( with unstable; [
+    godot-mono
+  ]);
 }
