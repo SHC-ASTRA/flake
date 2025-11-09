@@ -4,19 +4,15 @@
     enable = true;
     addKeysToAgent = "yes";
     forwardAgent = true;
+    compression = true;
     extraConfig = ''
       PreferredAuthentications publickey,password
-      IdentitiesOnly true
-      IdentityFile ~/.ssh/id_ed25519
     '';
     matchBlocks = {
-      "github.com" = {
+      "git@github.com" = {
         hostname = "github.com";
-        user = "git";
-        identityFile = "~/.ssh/github";
-        identitiesOnly = true;
+	user = "git";
       };
-
       "clucky" = {
         hostname = hosts.clucky.ip;
         user = "astra";
