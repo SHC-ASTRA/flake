@@ -7,11 +7,12 @@
     compression = true;
     extraConfig = ''
       PreferredAuthentications publickey,password
+      IdentityFile /home/astra/.ssh/id_ed25519
     '';
     matchBlocks = {
       "git@github.com" = {
         hostname = "github.com";
-	user = "git";
+        user = "git";
       };
       "clucky" = {
         hostname = hosts.clucky.ip;
