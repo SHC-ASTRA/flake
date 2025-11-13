@@ -7,5 +7,6 @@ let
   systems = [ testbed deck ];
 in
 {
+  # SSH private key for ASTRA machines
   "id_ed25519-key.age".publicKeys = users ++ systems;
 }
